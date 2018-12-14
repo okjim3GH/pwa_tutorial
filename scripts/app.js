@@ -56,7 +56,8 @@
     }
     app.getForecast(key, label);
     // TODO push the selected city to the array and save here
-    app.selectedCities.push({key: key, label: label});
+				app.selectedCities.push({key: key, label: label});
+				
     app.saveSelectedCities();
     app.toggleAddDialog(false);
   });
@@ -109,11 +110,15 @@
     var humidity = data.channel.atmosphere.humidity;
     var wind = data.channel.wind;
 
-    var card = app.visibleCards[data.key];
+				var card = app.visibleCards[data.key];
+				//console.log(app.visibleCards);
+				//console.log(app.selectedCities);
     if (!card) {
       card = app.cardTemplate.cloneNode(true);
       card.classList.remove('cardTemplate');
-      card.querySelector('.location').textContent = data.label;
+						card.querySelector('.location').textContent = data.label;
+						card.querySelector('.closebuttonspan').setAttribute('data-value', data.key );
+						card.querySelector('.closebuttonspan').addEventListener('click', app.removeCard);
       card.removeAttribute('hidden');
       app.container.appendChild(card);
       app.visibleCards[data.key] = card;
@@ -132,7 +137,7 @@
       }
     }
     cardLastUpdatedElem.textContent = data.created;
-
+				card.setAttribute('id', data.key);
     card.querySelector('.description').textContent = current.text;
     card.querySelector('.date').textContent = current.date;
     card.querySelector('.current .icon').classList.add(app.getIconClass(current.code));
@@ -167,13 +172,22 @@
       app.isLoading = false;
     }
   };
-
+app.removeCard = function(e){
+		console.log(this.dataset.value);
+		let idToRemove = this.dataset.value;
+		//let loc = app.visibleCards.indexOf( idToRemove );
+		var loc = app.visibleCards.findIndex(function(city) {
+			return city.key == idToRemove;
+	});
+	app.visibleCards.splice(loc, 1);
+	};
+	// also remove from selectedCities? also remove from DOM?
 
   /*****************************************************************************
    *
    * Methods for dealing with the model
    *
-   ****************************************************************************/
+   *****************************************************************************/
 
   /*
    * Gets a forecast for a specific city and updates the card with the data.
@@ -238,18 +252,18 @@
       app.getForecast(key);
     });
      
-    const closebuttons = document.getElementsByClassName('closebuttonspan');
-    console.log(["closebuttons",closebuttons.length]);
-    for(var i = 0; i < closebuttons.length; i++) {
-      (function(index) {
-        console.log(closebuttons[index]);
-        closebuttons[index].addEventListener("click", function() {
-          console.log("Clicked index: " + index);
-        })
-      })(i);
-    }
+  //   const closebuttons = document.getElementsByClassName('closebuttonspan');
+  //   console.log(["closebuttons",closebuttons.length]);
+  //   for(var i = 0; i < closebuttons.length; i++) {
+  //     (function(index) {
+  //       console.log(closebuttons[index]);
+  //       closebuttons[index].addEventListener("click", function() {
+  //         console.log("Clicked index: " + index);
+  //       })
+  //     })(i);
+  //   }
 
-  };
+   };
 
   // TODO add saveSelectedCities function here
 
