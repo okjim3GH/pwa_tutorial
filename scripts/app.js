@@ -137,7 +137,7 @@
       }
     }
     cardLastUpdatedElem.textContent = data.created;
-				card.setAttribute('id', data.key);
+		card.setAttribute('id', 'card' + data.key);
     card.querySelector('.description').textContent = current.text;
     card.querySelector('.date').textContent = current.date;
     card.querySelector('.current .icon').classList.add(app.getIconClass(current.code));
@@ -169,15 +169,23 @@
       app.isLoading = false;
     }
   };
-  app.removeCard = function(){
-    console.log(this.dataset.value);
-    let idToRemove = this.dataset.value;
+
+app.removeCard = function(e){
+		console.log(this.dataset.value);
+		let idToRemove = this.dataset.value;
     //let loc = app.visibleCards.indexOf( idToRemove );
-    console.log([idToRemove,app]);
-     var result = delete app.visibileCards[parseInt(idToRemove,10)];
-    console.log([result,app]);
-    //var loc = app.visibleCards.findIndex(city => city.key == idToRemove);
-    //app.visibleCards.splice(loc, 1);
+    console.log(app.selectedCities);
+		var loc = app.selectedCities.findIndex(function(city) {
+			return city.key == idToRemove;
+    });
+    console.log(loc);
+    app.selectedCities.splice(loc, 1);
+    console.log(app.selectedCities);
+    app.saveSelectedCities();
+    console.log(app.container)
+    var card = app.container.querySelector('#card' + idToRemove);
+    card.remove();
+
 	};
 	// also remove from selectedCities? also remove from DOM?
 
