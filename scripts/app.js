@@ -159,13 +159,10 @@
       var nextDay = nextDays[i];
       var daily = data.channel.item.forecast[i];
       if (daily && nextDay) {
-        nextDay.querySelector('.date').textContent =
-          app.daysOfWeek[(i + today) % 7];
+        nextDay.querySelector('.date').textContent = app.daysOfWeek[(i + today) % 7];
         nextDay.querySelector('.icon').classList.add(app.getIconClass(daily.code));
-        nextDay.querySelector('.temp-high .value').textContent =
-          Math.round(daily.high);
-        nextDay.querySelector('.temp-low .value').textContent =
-          Math.round(daily.low);
+        nextDay.querySelector('.temp-high .value').textContent = Math.round(daily.high);
+        nextDay.querySelector('.temp-low .value').textContent = Math.round(daily.low);
       }
     }
     if (app.isLoading) {
@@ -174,6 +171,7 @@
       app.isLoading = false;
     }
   };
+
 app.removeCard = function(e){
 		console.log(this.dataset.value);
 		let idToRemove = this.dataset.value;
@@ -189,6 +187,7 @@ app.removeCard = function(e){
     console.log(app.container)
     var card = app.container.querySelector('#card' + idToRemove);
     card.remove();
+
 	};
 	// also remove from selectedCities? also remove from DOM?
 
@@ -448,7 +447,8 @@ app.removeCard = function(e){
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
              .register('../service-worker.js')
-             .then(function() { console.log('Service Worker Registered'); });
+             .then(function() { console.log('Service Worker Registered'); 
+    });
   }
 
 })();
