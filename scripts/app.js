@@ -27,6 +27,8 @@
     daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
   };
 
+  
+
 
   /*****************************************************************************
    *
@@ -204,6 +206,29 @@ app.removeCard = function(e){
    * request goes through, then the card gets updated a second time with the
    * freshest data.
    */
+
+   app.getCities = function(){
+      var statement = 'select woeid,text from geo.places(1) where u="c" and placetype = "town"';
+      var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' + statement;
+     // url = "http://query.yahooapis.com/v1/public/yql?q=select+*+from+geo.places.descendants+where+ancestor_woeid=2347591+and+placetype='Town'";
+
+      var request = new XMLHttpRequest();
+      request.onreadystatechange = function() {
+        if (request.readyState === XMLHttpRequest.DONE) {
+          if (request.status === 200) {
+            var response = JSON.parse(request.response);
+            var results = response.query.results;
+            console.log( results );
+          }
+        } else {
+          console.log( request.response );
+        }
+      };
+      request.open('GET', url);
+      request.send();
+  
+   };
+   //app.getCities();
   app.getForecast = function(key, label) {
     var statement = 'select * from weather.forecast where woeid=' + key;
     var url = 'https://query.yahooapis.com/v1/public/yql?format=json&q=' +
